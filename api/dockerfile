@@ -1,0 +1,15 @@
+FROM node:latest
+
+# กำหนดไดเรกทอรีทำงาน
+WORKDIR /usr/src/app
+
+# คัดลอกไฟล์ package.json และ package-lock.json
+COPY package.json ./
+COPY package-lock.json ./
+RUN npm install 
+# คัดลอกไฟล์โปรเจกต์ทั้งหมด
+COPY . .
+
+# เปิดพอร์ตที่ใช้
+EXPOSE 3000
+CMD ["node", "index.js"]
