@@ -1,0 +1,28 @@
+stages:
+  - build_image
+  - import_db
+build_image:
+  stage: build_image
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - docker-compose up -d
+  tags:
+    - test1-runner
+  only:
+    - dev
+import_db: 
+  stage: import_db
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - docker cp backup.sql webmanager_db:/backup.sql
+    - docker exec -i webmanager_db ls
+    - docker exec -i webmanager_db bash -c "mysql -u root -proot Devops < /backup.sql"
+  tags:
+    - test1-runner
+  only:
+    - dev
+
